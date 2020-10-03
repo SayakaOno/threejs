@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
   </head>
   <body></body>
 </html>
 
 <script>
-  let scene, camera, renderer;
+  let scene, camera, renderer, cube;
+  let ADD = 0.1;
+
+  let createCube = () => {
+    let geometry = new THREE.BoxGeometry(1, 1, 1);
+    let meterial = new THREE.MeshBasicMaterial({ color: 0x00a1cb });
+    cube = new THREE.Mesh(geometry, meterial);
+    scene.add(cube);
+  };
 
   let init = () => {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xababab);
+    scene.background = new THREE.Color(0xffffee);
 
     camera = new THREE.PerspectiveCamera(
       30,
@@ -25,6 +33,11 @@
     );
     camera.position.z = 5;
 
+    let axes = new THREE.AxesHelper(5);
+    scene.add(axes);
+
+    createCube();
+
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -32,7 +45,8 @@
   };
 
   let mainLoop = () => {
-    console.log('Hello');
+    cube.rotation.y += ADD;
+
     renderer.render(scene, camera);
     requestAnimationFrame(mainLoop);
   };
